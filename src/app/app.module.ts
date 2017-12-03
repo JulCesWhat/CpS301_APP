@@ -1,21 +1,40 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpModule} from '@angular/http';
+import { RouterModule } from '@angular/router';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+//import { moem } from '@angular/material-moment-adapter';
 import { AppMaterialModule } from './app-material/app-material.module';
 
+import { appRoutes } from './routes';
+
 import { AppComponent } from './app.component';
+import { FooterComponent } from './nav/footer/footer.component';
+import { HeaderComponent } from './nav/header/header.component';
+import { SiderComponent } from './nav/sider/sider.component';
+import { PageHomeComponent } from './page-home/page-home.component';
+import { PageViewComponent } from './page-view/page-view.component';
+import { PageCreateComponent } from './page-create/page-create.component';
+import { Page404Component } from './page-404/page-404.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FooterComponent,
+    HeaderComponent,
+    SiderComponent,
+    PageHomeComponent,
+    PageViewComponent,
+    PageCreateComponent,
+    Page404Component
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    RouterModule.forRoot(appRoutes),
     FormsModule,
     HttpModule,
     AppMaterialModule,
