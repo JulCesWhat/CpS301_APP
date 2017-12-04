@@ -2,6 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.5.
 
+## Requirements
+Angular CLI, NodeJS, NPM, Git
+
 ## Set up
 Go to folder and run `npm install` to get all packages.
 
