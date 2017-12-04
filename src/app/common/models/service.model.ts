@@ -29,3 +29,20 @@ export interface IPeople {
     serviceSongleader: any
     serviceevent: any
 }
+
+export interface IServiceEvent {
+    eventId: any
+    serviceId: any
+    seqNum: any
+    eventTypeId: any
+    notes: any
+    confirmed: any
+    personId: any
+    ensembleId: null,
+    songId: any
+    ensemble: any
+    eventType: any
+    person: any
+    service: any
+    song: any
+}

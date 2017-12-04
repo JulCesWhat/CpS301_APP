@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { IServiceEvent } from './../common/models/service.model'
 
 @Component({
   selector: 'app-dynamic',
@@ -7,10 +8,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DynamicComponent implements OnInit {
 
-  @Input('someProp') someProp = ''
-  constructor() { }
+  @Input('someProp') someProp
+  constructor() {
+   }
 
   ngOnInit() {
+    console.log("Estamoes en el dynimic....")
+    console.log(this.someProp)
   }
 
 }

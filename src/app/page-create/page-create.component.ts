@@ -8,10 +8,10 @@ import * as moment from 'moment';
 import { CreatesService } from './../common/services/creates.service'
 import { error } from 'selenium-webdriver';
 
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 import { FormDirective } from './../form.directive';
-import {DynamicComponent} from "./../dynamic/dynamic.component";
+import { DynamicComponent } from "./../dynamic/dynamic.component";
 
 
 
@@ -21,7 +21,7 @@ import {DynamicComponent} from "./../dynamic/dynamic.component";
   styleUrls: ['./page-create.component.scss'],
   providers: [CreatesService]
 })
-export class PageCreateComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PageCreateComponent implements OnInit, OnDestroy {
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -30,15 +30,16 @@ export class PageCreateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //Here is where it starts for the time
   private _createService;
-  services : any = [];
+  services: any = [];
   peoples: any = [];
   songLeaders: any = [];
+  serviceEvents: any = []
   activated = true;
   errorMsg: any;
 
   serviceValue: string;
   songLeaderValue: string;
-  
+
 
   //Here is for component
   @Input() ads: any[];
@@ -46,27 +47,19 @@ export class PageCreateComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(FormDirective) adHost: FormDirective;
   subscription: any;
   interval: any;
-  
 
-  
-  constructor(createService: CreatesService, private componentFactoryResolver: ComponentFactoryResolver) {
 
+
+  constructor(createService: CreatesService,
+    private componentFactoryResolver: ComponentFactoryResolver) {
     this._createService = createService;
-    // this.services = this.route.snapshot.data['service']
-    // console.log(this.services)
-  }
-  
-
-  ngAfterViewInit() {
-    //this.loadComponent();
-    //this.getAds();
   }
 
   ngOnDestroy() {
     clearInterval(this.interval);
   }
 
-  loadComponent(value: string) {
+  loadComponent(value: any) {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicComponent);
 
     let viewContainerRef = this.adHost.viewContainerRef;
@@ -76,33 +69,31 @@ export class PageCreateComponent implements OnInit, AfterViewInit, OnDestroy {
     (<DynamicComponent>componentRef.instance).someProp = value;
   }
 
-  
+
   ngOnInit() {
     console.log("this is Cesar Whatley")
     this._createService.getServices()
       .subscribe(service => this.services = service,
-        error => this.errorMsg = <any>error);
+      error => this.errorMsg = <any>error);
 
 
     this._createService.getSongLeaders()
       .subscribe(songLeader => this.songLeaders = songLeader,
-        error => this.errorMsg = <any>error)
+      error => this.errorMsg = <any>error)
   }
 
   selectedService(newService: any) {
     this.serviceValue = newService.value;
     console.log(newService.value)
 
-
-
-    
-    console.log("I am being runned!!!")
+    this._createService.getServiceEvents(this.serviceValue)
+      .subscribe(serviceEvent => this.serviceEvents = serviceEvent,
+      error => this.errorMsg = <any>error,
+      () => this.loadComponent(this.serviceEvents))
   }
 
   selectedSongLeader(newSongLeader: any) {
     this.songLeaderValue = newSongLeader.value;
-    console.log(this.songLeaders)
-    this.loadComponent(this.songLeaderValue)
   }
 
 

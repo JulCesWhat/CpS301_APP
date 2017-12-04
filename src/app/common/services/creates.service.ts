@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 //import { Response, Headers, RequestOptions } from '@angular/http';
-import { Subject, Observable } from 'rxjs/RX';
+import { Subject, Observable } from 'rxjs/Rx';
 import { IService, IPeople } from './../models/service.model';
 import { environment } from './../../../environments/environment';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import 'rxjs/Rx';
+import * as moment from 'moment';
 
 //import { HttpErrorResponse } from '@angular/common/http/src/response';
 
@@ -38,8 +38,16 @@ export class CreatesService {
       .catch(this.handleError);
   }
 
-  getService() {
+  getServiceEvents(serviceID: string) {
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
 
+
+    console.log('getSongLeaders   ---> is being called')
+    return this._http.get(this._backEndUrl + "/Services/serviceEvents/" + serviceID, { headers: headers })    ///WOWRING IN HERE
+      //.map((response: HttpResponse) => <IService[]>response)
+      .do(data => console.log("All " + JSON.stringify(data)))
+      .catch(this.handleError);
   }
 
   getSongLeaders(): Observable<IPeople[]> {
