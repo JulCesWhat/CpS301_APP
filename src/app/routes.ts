@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageViewComponent } from './page-view/page-view.component';
 import { PageCreateComponent } from './page-create/page-create.component';
+import { PageCreateResolverService } from './page-create/page-create-resolver.service';
 import { Page404Component } from './page-404/page-404.component';
 
 
