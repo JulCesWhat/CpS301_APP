@@ -103,4 +103,12 @@ export class CreatesService {
       .do(data => console.log("All " + JSON.stringify(data)))
       .catch(this.handleError);
   }
+
+  // postService(service: IService): Promise<IService> {
+  //   let headers = new Headers({ 'Content-Type': 'application/json' });
+  //   let options = new RequestOptions({ headers: headers });
+  //   return this.http.post(this.url, book, options).toPromise()
+  //          .then(this.extractData)
+  //          .catch(this.handleErrorPromise)
+  // }
 }
