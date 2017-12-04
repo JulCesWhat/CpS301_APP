@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { CreatesService } from './../common/services/creates.service'
 import { error } from 'selenium-webdriver';
 
+import { ScheduleEvent } from './../common/models/service.model';
 import { FormControl, Validators } from '@angular/forms';
 
 import { FormDirective } from './../form.directive';
@@ -31,9 +32,14 @@ export class PageCreateComponent implements OnInit, OnDestroy {
   //Here is where it starts for the time
   private _createService;
   services: any = [];
-  peoples: any = [];
   songLeaders: any = [];
+
   serviceEvents: any = []
+  songs: any = [];
+  eventTypes: any = []
+  persons: any = [];
+
+
   activated = true;
   errorMsg: any;
 
@@ -71,7 +77,7 @@ export class PageCreateComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log("this is Cesar Whatley")
+
     this._createService.getServices()
       .subscribe(service => this.services = service,
       error => this.errorMsg = <any>error);
@@ -80,6 +86,22 @@ export class PageCreateComponent implements OnInit, OnDestroy {
     this._createService.getSongLeaders()
       .subscribe(songLeader => this.songLeaders = songLeader,
       error => this.errorMsg = <any>error)
+
+    //Getting people
+    this._createService.getPeople()
+      .subscribe(person => this.persons = person,
+      error => this.errorMsg = <any>error)
+
+    //Getting eventTypes
+    this._createService.getEventTypes()
+      .subscribe(eventType => this.eventTypes = eventType,
+      error => this.errorMsg = <any>error)
+
+    //Getting Songs
+    this._createService.getSongs()
+      .subscribe(song => this.songs = song,
+      error => this.errorMsg = <any>error)
+
   }
 
   selectedService(newService: any) {
@@ -89,7 +111,68 @@ export class PageCreateComponent implements OnInit, OnDestroy {
     this._createService.getServiceEvents(this.serviceValue)
       .subscribe(serviceEvent => this.serviceEvents = serviceEvent,
       error => this.errorMsg = <any>error,
-      () => this.loadComponent(this.serviceEvents))
+      () => this.formatServiceEvents(this.serviceEvents))
+  }
+
+  getPerson(id: number) {
+    console.log('getPerson  ' + id)
+    if (id !== null) {
+      console.log("cpai")
+      for (var i = 0; i < this.persons.length; i++) {
+        if (this.persons[i].personId === id) {
+          return this.persons[i].firstName + " " + this.persons[i].lastName;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  getSong(id: number): string {
+    if (id !== null) {
+      for (var i = 0; i < this.songs.length; i++) {
+        if (this.songs[i].songId === id) {
+          return this.songs[i].title;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  getEventType(id: number): string {
+    if (id !== null) {
+      for (var i = 0; i < this.eventTypes.length; i++) {
+        if (this.eventTypes[i].eventTypeId === id) {
+          return this.eventTypes[i].description;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  formatServiceEvents(serEvents: any) {
+
+    var events = []
+
+    for(var i = 0; i < serEvents.length; i++) {
+      events.push({
+        "eventID": "",
+        "eventName": this.getEventType(serEvents[i].eventTypeId),
+        "songName": this.getSong(serEvents[i].songId),
+        "personName": this.getPerson(serEvents[i].personId)
+      })
+      //console.log(serEvents[i].eventTypeId + " " + serEvents[i].songId + " " + serEvents[i].personId)
+    }
+
+
+    console.log('aqiiii')
+    console.log(events);
+    console.log('aqiiii')
+
+    this.loadComponent(events)
+
   }
 
   selectedSongLeader(newSongLeader: any) {

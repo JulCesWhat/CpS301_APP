@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 //import { Response, Headers, RequestOptions } from '@angular/http';
 import { Subject, Observable } from 'rxjs/Rx';
-import { IService, IPeople } from './../models/service.model';
+import { IService, IPeople, ISong, IEventType } from './../models/service.model';
 import { environment } from './../../../environments/environment';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import * as moment from 'moment';
@@ -64,11 +64,38 @@ export class CreatesService {
   }
 
 
+  getSongs(): Observable<ISong[]> {
+
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
+
+
+    console.log('getSongs   ---> is being called')
+    return this._http.get(this._backEndUrl + "/Songs", { headers: headers })    ///WOWRING IN HERE
+      //.map((response: HttpResponse) => <IService[]>response)
+      .do(data => console.log("All " + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  getEventTypes(): Observable<ISong[]> {
+    
+        const headers = new HttpHeaders();
+        headers.set('Content-Type', 'application/json');
+    
+    
+        console.log('getSongs   ---> is being called')
+        return this._http.get(this._backEndUrl + "/Eventtypes", { headers: headers })    ///WOWRING IN HERE
+          //.map((response: HttpResponse) => <IService[]>response)
+          .do(data => console.log("All " + JSON.stringify(data)))
+          .catch(this.handleError);
+      }
+
+
   getPeople(): Observable<IPeople[]> {
 
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json');
-    
+
 
     console.log('getPeople   ---> is being called')
     return this._http.get(this._backEndUrl + "/People", { headers: headers })    ///WOWRING IN HERE
