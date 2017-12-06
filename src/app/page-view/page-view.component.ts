@@ -86,7 +86,7 @@ export class PageViewComponent implements OnInit {
   checkService(services: any[], routeId: string) {
 
     this.serviceID = "";
-    console.log("I am running" + routeId)
+    console.log("I am running checkService  ----" + routeId)
 
     for(var i = 0; i < services.length; i++) {
       if ((services[0].svcDateTime).includes(routeId)) {
@@ -94,6 +94,8 @@ export class PageViewComponent implements OnInit {
         break;
       }
     }
+
+    console.log('-----------------------------------')
 
     console.log(this.serviceID)
     console.log("I am here")
@@ -157,7 +159,7 @@ export class PageViewComponent implements OnInit {
         "songName": this.getSong(serEvents[i].songId),
         "personName": this.getPerson(serEvents[i].personId)
       })
-      //console.log(serEvents[i].eventTypeId + " " + serEvents[i].songId + " " + serEvents[i].personId)
+      console.log(serEvents[i].eventTypeId + " " + serEvents[i].songId + " " + serEvents[i].personId)
     }
 
     this.loadComponent(events)

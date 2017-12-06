@@ -191,7 +191,7 @@ export class PageCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  createService() {
+  postSvc() {
     console.log("Service should be created")
   }
 }
