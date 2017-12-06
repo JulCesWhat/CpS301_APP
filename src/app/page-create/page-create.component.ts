@@ -1,20 +1,21 @@
-import { Component, OnInit, Input, AfterViewInit, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { MatDatepicker, fadeInContent } from '@angular/material';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
-import { CreatesService } from './../common/services/creates.service'
 import { error } from 'selenium-webdriver';
 
 import { ScheduleEvent } from './../common/models/service.model';
 import { FormControl, Validators } from '@angular/forms';
+import { CreatesService } from './../common/services/creates.service'
 
-import { FormDirective } from './../form.directive';
 import { DynamicComponent } from "./../dynamic/dynamic.component";
+import { Server } from 'selenium-webdriver/safari';
 
-
+//https://github.com/gund/ng-dynamic-component  ==  Information for 
+//dynamic components
 
 @Component({
   selector: 'app-page-create',
@@ -22,7 +23,7 @@ import { DynamicComponent } from "./../dynamic/dynamic.component";
   styleUrls: ['./page-create.component.scss'],
   providers: [CreatesService]
 })
-export class PageCreateComponent implements OnInit, OnDestroy {
+export class PageCreateComponent implements OnInit {
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -34,47 +35,30 @@ export class PageCreateComponent implements OnInit, OnDestroy {
   services: any = [];
   songLeaders: any = [];
 
+
   serviceEvents: any = []
+  newServicEvents: any = [];
   songs: any = [];
   eventTypes: any = []
   persons: any = [];
 
 
-  activated = true;
   errorMsg: any;
 
   serviceValue: string;
   songLeaderValue: string;
 
 
-  //Here is for component
-  @Input() ads: any[];
-  currentAddIndex: number = -1;
-  @ViewChild(FormDirective) adHost: FormDirective;
-  subscription: any;
-  interval: any;
+  // New way of doing components
+  formComponent: any;
+  formInput: any;
+  formOutput: any;
 
 
 
-  constructor(createService: CreatesService,
-    private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(createService: CreatesService) {
     this._createService = createService;
   }
-
-  ngOnDestroy() {
-    clearInterval(this.interval);
-  }
-
-  loadComponent(value: any) {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicComponent);
-
-    let viewContainerRef = this.adHost.viewContainerRef;
-    viewContainerRef.clear();
-
-    let componentRef = viewContainerRef.createComponent(componentFactory);
-    (<DynamicComponent>componentRef.instance).someProp = value;
-  }
-
 
   ngOnInit() {
 
@@ -106,18 +90,15 @@ export class PageCreateComponent implements OnInit, OnDestroy {
 
   selectedService(newService: any) {
     this.serviceValue = newService.value;
-    console.log(newService.value)
 
     this._createService.getServiceEvents(this.serviceValue)
       .subscribe(serviceEvent => this.serviceEvents = serviceEvent,
       error => this.errorMsg = <any>error,
-      () => this.formatServiceEvents(this.serviceEvents))
+      () => this.formatServiceEvents(this.serviceEvents, this.serviceValue))
   }
 
-  getPerson(id: number) {
-    console.log('getPerson  ' + id)
+  findPerson(id: number) {
     if (id !== null) {
-      console.log("cpai")
       for (var i = 0; i < this.persons.length; i++) {
         if (this.persons[i].personId === id) {
           return this.persons[i].firstName + " " + this.persons[i].lastName;
@@ -128,7 +109,7 @@ export class PageCreateComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  getSong(id: number): string {
+  findSong(id: number): string {
     if (id !== null) {
       for (var i = 0; i < this.songs.length; i++) {
         if (this.songs[i].songId === id) {
@@ -140,7 +121,7 @@ export class PageCreateComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  getEventType(id: number): string {
+  findEventType(id: number): string {
     if (id !== null) {
       for (var i = 0; i < this.eventTypes.length; i++) {
         if (this.eventTypes[i].eventTypeId === id) {
@@ -152,27 +133,29 @@ export class PageCreateComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  formatServiceEvents(serEvents: any) {
+  formatServiceEvents(serEvents: any, serviceID: string) {
 
     var events = []
 
     for(var i = 0; i < serEvents.length; i++) {
       events.push({
-        "eventID": "",
-        "eventName": this.getEventType(serEvents[i].eventTypeId),
-        "songName": this.getSong(serEvents[i].songId),
-        "personName": this.getPerson(serEvents[i].personId)
-      })
-      //console.log(serEvents[i].eventTypeId + " " + serEvents[i].songId + " " + serEvents[i].personId)
+        "serviceId": serviceID,
+        "eventId": serEvents[i].eventId,
+        "eventName": this.findEventType(serEvents[i].eventTypeId),
+        "songName": this.findSong(serEvents[i].songId),
+        "personName": this.findPerson(serEvents[i].personId),
+        "eventNotes": serEvents[i].notes
+      });
     }
 
+    this.formComponent = DynamicComponent;
 
-    console.log('aqiiii')
-    console.log(events);
-    console.log('aqiiii')
-
-    this.loadComponent(events)
-
+      this.formInput = {
+        serviceEvent: events
+      };
+      this.formOutput = {
+        onSomething: (type) => this.newServicEvents = type
+      }
   }
 
   selectedSongLeader(newSongLeader: any) {
@@ -184,14 +167,14 @@ export class PageCreateComponent implements OnInit, OnDestroy {
 
     if (event.value) {
       console.log(moment(event.value).format('YYYY MM DD'))
-      this.activated = false;
     } else {
-      this.activated = true;
       console.log('There was an error.');
     }
   }
 
   postSvc() {
+    this._createService.sendMessageToDynamic();
+    //console.log(this.newServicEvents)
     console.log("Service should be created")
   }
 }

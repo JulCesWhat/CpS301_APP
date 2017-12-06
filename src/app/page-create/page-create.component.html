@@ -67,9 +67,12 @@
 
   </mat-card-content>
   <mat-card-actions>
-      <button mat-button mat-raised-button color="primary" [disabled]="activated" (click)="postSvc()">Create</button>
+    <button mat-button mat-raised-button color="primary" [disabled]="activated" (click)="postSvc()">Create</button>
   </mat-card-actions>
 </mat-card>
 
 
-<ng-template appForm></ng-template>
+<ndc-dynamic [ndcDynamicComponent]="formComponent"
+             [ndcDynamicInputs]="formInput"
+             [ndcDynamicOutputs]="formOutput">
+</ndc-dynamic>

@@ -64,6 +64,7 @@ export interface IEventType {
 
 
 export interface ScheduleEvent {
+    serviceId: string
     eventId: number
     songName: string
     personName: string

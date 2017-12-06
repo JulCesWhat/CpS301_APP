@@ -1,34 +1,18 @@
 <mat-card class="example-card">
   <mat-card-content>
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <th>Event</th>
-        <th>Name</th>
-        <th>Title</th>
-        <th>Comments</th>
-      </tr>
-      <tr *ngFor="let service of someProp">
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput value="{{service.eventName}}">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput value="{{service.personName}}">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput value="{{service.songName}}">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput value="{{service.eventTypeId}}">
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
+    <div *ngFor="let event of serviceEvent">
+      <mat-form-field>
+        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.eventName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.personName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.songName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.eventNotes">
+      </mat-form-field>
+    </div>
   </mat-card-content>
 </mat-card>
