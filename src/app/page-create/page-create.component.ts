@@ -110,6 +110,11 @@ export class PageCreateComponent implements OnInit {
       () => this.formatServiceEvents(this.serviceEvents, this.serviceId))
   }
 
+  identify(index,item){
+    //do what ever logic you need to come up with the unique identifier of your item in loop, I will just return the object id.
+    return item.serviceId 
+   }
+
   findPerson(id: number) {
     if (id !== null) {
       for (var i = 0; i < this.persons.length; i++) {
@@ -201,7 +206,7 @@ export class PageCreateComponent implements OnInit {
       let checkDateTime = false;
       for(let i = 0; i < this.services.length; i++) {
         
-        if(this.services[i].svcDateTime !== inputDate + "T" + this.timeFormControl.value) {
+        if(this.services[i].svcDateTime === inputDate + "T" + this.timeFormControl.value) {
           checkDateTime = true;
           i = this.services.length;
         }

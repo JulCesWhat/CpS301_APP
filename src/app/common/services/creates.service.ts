@@ -118,7 +118,7 @@ export class CreatesService {
   postService(service: IService): Observable<any> {
     console.log("postService() is being called")
 
-    return this._http.post("http://localhost:9090/api/Services", service)
+    return this._http.post(this._backEndUrl + "/Services", service)
       .catch(this.handleError);
 
    }
@@ -126,7 +126,7 @@ export class CreatesService {
    postServiceEvent(serviceEvent: IServiceEvent): Observable<any> {
     console.log("postServiceEvent() is being called")
 
-    return this._http.post("http://localhost:9090/api/Serviceevents", serviceEvent)
+    return this._http.post(this._backEndUrl + "/Serviceevents", serviceEvent)
       .catch(this.handleError);
 
    }

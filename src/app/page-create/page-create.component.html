@@ -22,7 +22,7 @@
             <p>
               <mat-form-field class="example-full-width">
                 <mat-select placeholder="Select Template Service" (selectionChange)="selectedService($event)">
-                  <mat-option value="{{service.svcDateTime}}={{service.serviceId}}" *ngFor="let service of services; trackBy: trackByFn;">{{service.svcDateTime}}</mat-option>
+                  <mat-option value="{{service.svcDateTime}}={{service.serviceId}}" *ngFor="let service of services; trackBy: identify;">{{service.svcDateTime}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </p>
@@ -43,7 +43,7 @@
         
           </mat-card-content>
           <mat-card-actions>
-            <button mat-button mat-raised-button color="primary" [disabled]="activated" (click)="postPreparation()">Create</button>
+            <button mat-button mat-raised-button color="primary" (click)="postPreparation()">Create</button>
           </mat-card-actions>
         </mat-card>
   </div>
