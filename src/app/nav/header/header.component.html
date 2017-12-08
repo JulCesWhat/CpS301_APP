@@ -1,9 +1,15 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-      <mat-icon class="example-icon" (click)="goHome()">HOME</mat-icon>
+      <button mat-raised-button color="primary" (click)="goHome()">
+        <mat-icon aria-label="Example icon-button with a heart icon">home</mat-icon>
+      </button>
       <span class="example-spacer"></span>
       <span>Church Service Page</span>
-      <span (click)="setMode()">click Me</span>
+      <span class="example-spacer"></span>
+      <!-- <span (click)="setMode()">click Me</span> -->
+      <button mat-mini-fab (click)="setMode()">
+        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+      </button>
   </mat-toolbar-row>
 
   <mat-toolbar-row>

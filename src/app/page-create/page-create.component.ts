@@ -190,10 +190,6 @@ export class PageCreateComponent implements OnInit {
   postPreparation() {
     //this._createService.sendMessageToDynamic();
     console.log("postSvc()")
-
-    console.log(this.newTheme)
-    console.log(this.newTitle)
-
     // console.log(this.timeFormControl.value)
     // console.log(this.serializedDate.valid)
     // console.log(this.parseDate(this.serializedDate.value.toISOString(), true))
@@ -202,12 +198,21 @@ export class PageCreateComponent implements OnInit {
     if(this.serializedDate.valid && this.timeFormControl.valid && this.serviceDate) {
       let inputDate = this.parseDate(this.serializedDate.value.toISOString(), true);
 
-      if(this.serviceDate !== inputDate + "T" + this.timeFormControl.value){
+      let checkDateTime = false;
+      for(let i = 0; i < this.services.length; i++) {
+        
+        if(this.services[i].svcDateTime !== inputDate + "T" + this.timeFormControl.value) {
+          checkDateTime = true;
+          i = this.services.length;
+        }
+      }
+
+      if(!checkDateTime){
 
         this.postService(inputDate, this.timeFormControl.value);
         
       } else {
-        this.snackBar.open("Time Error", "Check template time & Date.", {
+        this.snackBar.open("Time Error", "There is a service in that time.", {
           duration: 1500,
         });
       }
@@ -281,7 +286,9 @@ export class PageCreateComponent implements OnInit {
         .subscribe(
         (val) => {
           console.log("POST call successful value returned in body", val);
-          this.services.push(val)
+          this.snackBar.open("Success", "Post event done.", {
+            duration: 500,
+          });
         },
         response => {
           console.log("POST call in error", response);
@@ -290,6 +297,10 @@ export class PageCreateComponent implements OnInit {
 
     //Ressetting the serviceEvents to nothing
     this.serviceEvents = [];
+    this.formComponent = DynamicComponent;
+    this.formInput = {
+      serviceEvent: this.serviceEvents
+    };
   }
 
 }
