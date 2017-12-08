@@ -1,75 +1,54 @@
-<mat-card class="example-card">
-
-
-  <mat-card-content>
-    <form class="example-form">
-
-      <p>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Email" [formControl]="emailFormControl">
-          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-            Please enter a valid email address
-          </mat-error>
-          <mat-error *ngIf="emailFormControl.hasError('required')">
-            Email is
-            <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </p>
-
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateInput)="addEvent('input', $event)">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+<div id="outer">
+  <div id="inner">
+      <mat-card class="example-card">
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker2" placeholder="Date" [formControl]="serializedDate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
-          </td>
-          <td>
+        
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Input time like 10:00">
+              <input matInput placeholder="Time" [formControl]="timeFormControl">
+              <mat-error *ngIf="timeFormControl.hasError('pattern') && !timeFormControl.hasError('required')">
+                Please enter a valid military time
+              </mat-error>
+              <mat-error *ngIf="timeFormControl.hasError('required')">
+                Time is
+                <strong>required</strong>
+              </mat-error>
             </mat-form-field>
-          </td>
-        </tr>
-      </table>
-
-      <p>
-        <mat-form-field class="example-full-width">
-          <mat-select placeholder="Select Template Service" (selectionChange)="selectedService($event)">
-            <mat-option value="{{service.serviceId}}" *ngFor="let service of services; let i = index">{{service.svcDateTime}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </p>
-
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Title">
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Song">
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field class="example-full-width">
-              <mat-select placeholder="Song Leader" (selectionChange)="selectedSongLeader($event)">
-                <mat-option value="{{songLeader.personId}}" *ngFor="let songLeader of songLeaders; let i = index">{{songLeader.firstName}} {{songLeader.lastName}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-    </form>
-
-  </mat-card-content>
-  <mat-card-actions>
-      <button mat-button mat-raised-button color="primary" [disabled]="activated" (click)="CreateService()">Create</button>
-  </mat-card-actions>
-</mat-card>
+        
+            <p>
+              <mat-form-field class="example-full-width">
+                <mat-select placeholder="Select Template Service" (selectionChange)="selectedService($event)">
+                  <mat-option value="{{service.svcDateTime}}={{service.serviceId}}" *ngFor="let service of services; trackBy: identify;">{{service.svcDateTime}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </p>
+        
+            <div>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Title" [(ngModel)]="newTitle">
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Theme" [(ngModel)]="newTheme">
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <mat-select placeholder="Song Leader" (selectionChange)="selectedSongLeader($event)">
+                  <mat-option value="{{songLeader.personId}}" *ngFor="let songLeader of songLeaders; let i = index">{{songLeader.firstName}} {{songLeader.lastName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button mat-raised-button color="primary" (click)="postPreparation()">Create</button>
+          </mat-card-actions>
+        </mat-card>
+  </div>
+</div>
 
 
-<ng-template appForm></ng-template>
+<ndc-dynamic [ndcDynamicComponent]="formComponent" [ndcDynamicInputs]="formInput" [ndcDynamicOutputs]="formOutput">
+</ndc-dynamic>

@@ -3,9 +3,11 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from './app-material/app-material.module';
+
+import { DynamicModule } from 'ng-dynamic-component';
 
 import { appRoutes } from './routes';
 import { CoreModule } from './core/core.module';
@@ -19,9 +21,8 @@ import { PageViewComponent } from './page-view/page-view.component';
 import { PageCreateComponent } from './page-create/page-create.component';
 import { Page404Component } from './page-404/page-404.component';
 import { DynamicComponent } from './dynamic/dynamic.component';
-import { FormDirective } from './form.directive';
 
-
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -34,9 +35,7 @@ import { FormDirective } from './form.directive';
     PageCreateComponent,
     Page404Component,
     DynamicComponent,
-    FormDirective
   ],
-  entryComponents: [DynamicComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -46,8 +45,13 @@ import { FormDirective } from './form.directive';
     AppMaterialModule,
     ReactiveFormsModule,
     CoreModule,
+    DynamicModule.withComponents([DynamicComponent])
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(overlayContainer: OverlayContainer) {
+    overlayContainer.getContainerElement().classList.add('unicorn-dark-theme');
+  }
+}

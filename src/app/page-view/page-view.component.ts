@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, AfterViewInit, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { Observable } from "rxjs/Observable";
 import { CreatesService } from './../common/services/creates.service'
 import { IService } from './../common/models/service.model';
 
-import { FormDirective } from './../form.directive';
+
 import { DynamicComponent } from "./../dynamic/dynamic.component";
 
 
@@ -27,35 +27,10 @@ export class PageViewComponent implements OnInit {
   eventTypes: any = []
   persons: any = [];
 
-
-  //Here is for component
-  @Input() ads: any[];
-  currentAddIndex: number = -1;
-  @ViewChild(FormDirective) adHost: FormDirective;
-  subscription: any;
-  interval: any;
-
-
   constructor(private route: ActivatedRoute,
-    createService: CreatesService,
-    private componentFactoryResolver: ComponentFactoryResolver) {
+    createService: CreatesService,) {
     this._createService = createService;
     this.route.params.subscribe(params => this.getServices(params['serviceID']));
-    console.log("This is running.")
-  }
-
-  ngOnDestroy() {
-    clearInterval(this.interval);
-  }
-
-  loadComponent(value: any) {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicComponent);
-
-    let viewContainerRef = this.adHost.viewContainerRef;
-    viewContainerRef.clear();
-
-    let componentRef = viewContainerRef.createComponent(componentFactory);
-    (<DynamicComponent>componentRef.instance).someProp = value;
   }
 
   ngOnInit() {
@@ -86,7 +61,7 @@ export class PageViewComponent implements OnInit {
   checkService(services: any[], routeId: string) {
 
     this.serviceID = "";
-    console.log("I am running" + routeId)
+    console.log("I am running checkService  ----" + routeId)
 
     for(var i = 0; i < services.length; i++) {
       if ((services[0].svcDateTime).includes(routeId)) {
@@ -94,6 +69,8 @@ export class PageViewComponent implements OnInit {
         break;
       }
     }
+
+    console.log('-----------------------------------')
 
     console.log(this.serviceID)
     console.log("I am here")
@@ -157,10 +134,12 @@ export class PageViewComponent implements OnInit {
         "songName": this.getSong(serEvents[i].songId),
         "personName": this.getPerson(serEvents[i].personId)
       })
-      //console.log(serEvents[i].eventTypeId + " " + serEvents[i].songId + " " + serEvents[i].personId)
+      console.log(serEvents[i].eventTypeId + " " + serEvents[i].songId + " " + serEvents[i].personId)
     }
 
-    this.loadComponent(events)
+    //
+    //THE PLACE WHERE COMPONENTS ARE CREATED
+    //
   }
 
 }

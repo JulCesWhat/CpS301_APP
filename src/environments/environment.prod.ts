@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  API_HOST: "http://104.131.115.126",
+  API_HOST: "http://cps301-api.cesarwhatley.com",
   API_PORT: "80",
 };
