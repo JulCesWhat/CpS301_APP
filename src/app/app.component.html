@@ -1,5 +1,8 @@
-<app-header></app-header>
+
+<div [ngClass]="{'unicorn-dark-theme': darkMode}">
+<app-header (onDarkMode)="onDarkMode($event)"></app-header>
 
 <router-outlet></router-outlet>
 
 <app-footer></app-footer>
+</div>

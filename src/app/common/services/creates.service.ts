@@ -115,11 +115,11 @@ export class CreatesService {
       .catch(this.handleError);
   }
 
-  // postService(service: IService): Promise<IService> {
-  //   let headers = new Headers({ 'Content-Type': 'application/json' });
-  //   let options = new RequestOptions({ headers: headers });
-  //   return this.http.post(this.url, book, options).toPromise()
-  //          .then(this.extractData)
-  //          .catch(this.handleErrorPromise)
-  // }
+  postService(service: IService): Observable<any> {
+    console.log("postService() is being called")
+
+    return this._http.post("http://localhost:9090/api/Services", service)
+      .catch(this.handleError);
+
+   }
 }

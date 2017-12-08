@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from "@angular/router";
 
 @Component({
@@ -8,9 +8,18 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
 
+  @Output() onDarkMode = new EventEmitter<boolean>();
+  darkMode = false;
+
   constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  setMode() {
+    this.darkMode = this.darkMode ? false : true;
+
+    this.onDarkMode.emit(this.darkMode);
   }
 
   goHome() {

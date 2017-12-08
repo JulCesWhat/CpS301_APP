@@ -1,18 +1,36 @@
-<mat-card class="example-card">
-  <mat-card-content>
-    <div *ngFor="let event of serviceEvent">
-      <mat-form-field>
-        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.eventName">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.personName">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.songName">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="event.eventNotes">
-      </mat-form-field>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div id="outer">
+  <div id="inner">
+    <mat-card>
+      <mat-card-content>
+        <div>
+          <mat-form-field>
+            <input matInput disabled value="Event">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput disabled value="Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput disabled value="Title">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput disabled value="Comments">
+          </mat-form-field>
+        </div>
+        <div *ngFor="let event of serviceEvent">
+          <mat-form-field>
+            <input matInput disabled [ngModelOptions]="{standalone: true}" [(ngModel)]="event.eventName">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput disabled [ngModelOptions]="{standalone: true}" [(ngModel)]="event.personName">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput disabled [ngModelOptions]="{standalone: true}" [(ngModel)]="event.songName">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput disabled [ngModelOptions]="{standalone: true}" [(ngModel)]="event.eventNotes">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

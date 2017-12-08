@@ -22,7 +22,7 @@ import { PageCreateComponent } from './page-create/page-create.component';
 import { Page404Component } from './page-404/page-404.component';
 import { DynamicComponent } from './dynamic/dynamic.component';
 
-
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -50,4 +50,8 @@ import { DynamicComponent } from './dynamic/dynamic.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(overlayContainer: OverlayContainer) {
+    overlayContainer.getContainerElement().classList.add('unicorn-dark-theme');
+  }
+}
