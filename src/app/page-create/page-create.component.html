@@ -29,10 +29,10 @@
         
             <div>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Title">
+                <input matInput placeholder="Title" [(ngModel)]="newTitle">
               </mat-form-field>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Song">
+                <input matInput placeholder="Theme" [(ngModel)]="newTheme">
               </mat-form-field>
               <mat-form-field class="example-full-width">
                 <mat-select placeholder="Song Leader" (selectionChange)="selectedSongLeader($event)">
@@ -43,7 +43,7 @@
         
           </mat-card-content>
           <mat-card-actions>
-            <button mat-button mat-raised-button color="primary" [disabled]="activated" (click)="postSvc()">Create</button>
+            <button mat-button mat-raised-button color="primary" [disabled]="activated" (click)="postPreparation()">Create</button>
           </mat-card-actions>
         </mat-card>
   </div>

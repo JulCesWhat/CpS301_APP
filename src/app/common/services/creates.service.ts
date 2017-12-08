@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 //import { Response, Headers, RequestOptions } from '@angular/http';
 import { Subject, Observable } from 'rxjs/Rx';
-import { IService, IPeople, ISong, IEventType } from './../models/service.model';
+import { IService, IServiceEvent, IPeople, ISong, IEventType } from './../models/service.model';
 import { environment } from './../../../environments/environment';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import * as moment from 'moment';
@@ -119,6 +119,14 @@ export class CreatesService {
     console.log("postService() is being called")
 
     return this._http.post("http://localhost:9090/api/Services", service)
+      .catch(this.handleError);
+
+   }
+
+   postServiceEvent(serviceEvent: IServiceEvent): Observable<any> {
+    console.log("postServiceEvent() is being called")
+
+    return this._http.post("http://localhost:9090/api/Serviceevents", serviceEvent)
       .catch(this.handleError);
 
    }

@@ -15,6 +15,8 @@ import { DynamicComponent } from "./../dynamic/dynamic.component";
 import { Server } from 'selenium-webdriver/safari';
 import { print } from 'util';
 
+import {MatSnackBar} from '@angular/material';
+
 //https://github.com/gund/ng-dynamic-component  ==  Information for 
 //dynamic components
 
@@ -52,8 +54,7 @@ export class PageCreateComponent implements OnInit {
   serviceId: string;
   songLeaderValue: string;
   newTitle: string;
-  newSongName: string;
-  newServiceTime: string;
+  newTheme: string;
 
 
   // New way of doing components
@@ -63,8 +64,10 @@ export class PageCreateComponent implements OnInit {
 
 
 
-  constructor(createService: CreatesService) {
+  constructor(createService: CreatesService, public snackBar: MatSnackBar) {
     this._createService = createService;
+    this.newTitle = "";
+    this.newTheme = "";
   }
 
   ngOnInit() {
@@ -184,14 +187,46 @@ export class PageCreateComponent implements OnInit {
   }
   
 
-  postSvc() {
+  postPreparation() {
     //this._createService.sendMessageToDynamic();
     console.log("postSvc()")
 
+    console.log(this.newTheme)
+    console.log(this.newTitle)
+
+    // console.log(this.timeFormControl.value)
+    // console.log(this.serializedDate.valid)
+    // console.log(this.parseDate(this.serializedDate.value.toISOString(), true))
+    // console.log(this.serviceDate)
+
+    if(this.serializedDate.valid && this.timeFormControl.valid && this.serviceDate) {
+      let inputDate = this.parseDate(this.serializedDate.value.toISOString(), true);
+
+      if(this.serviceDate !== inputDate + "T" + this.timeFormControl.value){
+
+        this.postService(inputDate, this.timeFormControl.value);
+        
+      } else {
+        this.snackBar.open("Time Error", "Check template time & Date.", {
+          duration: 1500,
+        });
+      }
+
+    } else {
+      this.snackBar.open("Error", "Check inputs.", {
+        duration: 1500,
+      });
+    }
+
+  }
+
+  postService(newDate, newTime) {
+    console.log("postService()")
+
     let newService = {
-      "svcDateTime": this.serviceDate,
-      "theme": "Peace of Christ Rule in Your Hearts",
-      "title": "A.M Worship Service",
+      "svcDateTime": newDate + "T" + newTime,
+      "theme": this.newTheme !== "" ? this.newTheme : null,
+      "title": this.newTitle !== "" ? this.newTitle : null,
       "notes": null,
       "organistConf": "Y",
       "songleaderConf": "N",
@@ -206,18 +241,55 @@ export class PageCreateComponent implements OnInit {
       "serviceevent": []
     }
 
-    console.log(this.timeFormControl.value)
-    console.log(this.serializedDate.valid)
-    console.log(this.parseDate(this.serializedDate.value.toISOString(), true))
-
-    // this._createService.postService(newService)
-    // .subscribe(
-    //   (val) => {
-    //         console.log("POST call successful value returned in body", val);
-    //         this.services.push(val)
-    //     },
-    //     response => {
-    //         console.log("POST call in error", response);
-    //     });
+    this._createService.postService(newService)
+      .subscribe(
+      (val) => {
+        console.log("POST call successful value returned in body", val);
+        this.services.push(val);
+        if(this.serviceEvents.length > 0) {
+          this.postServiceEvent(val.serviceId);
+        }
+      },
+      response => {
+        console.log("POST call in error", response);
+      });
   }
+
+
+  postServiceEvent(serviceCreated: any) {
+    console.log("postServiceEvent()")
+
+    this.serviceEvents.forEach(evServicio => {
+
+      let newServiceEvent = {
+        "serviceId": serviceCreated,
+        "seqNum": evServicio.seqNum,
+        "eventTypeId": evServicio.eventTypeId,
+        "notes": evServicio.notes,
+        "confirmed": evServicio.confirmed,
+        "personId": evServicio.personId,
+        "ensembleId": evServicio.ensembleId,
+        "songId": evServicio.songId,
+        "ensemble": evServicio.ensemble,
+        "eventType": evServicio.eventType,
+        "person": evServicio.person,
+        "service": evServicio.service,
+        "song": evServicio.song
+      }
+
+      this._createService.postServiceEvent(newServiceEvent)
+        .subscribe(
+        (val) => {
+          console.log("POST call successful value returned in body", val);
+          this.services.push(val)
+        },
+        response => {
+          console.log("POST call in error", response);
+        });
+    });
+
+    //Ressetting the serviceEvents to nothing
+    this.serviceEvents = [];
+  }
+
 }
